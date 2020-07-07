@@ -9,12 +9,12 @@ object Async extends AsyncInterface {
   /**
     * Transforms a successful asynchronous computation
     */
-  override def transformSuccess[A,B](eventuallyX: Future[A])(f: A => B): Future[B] = eventuallyX.map(f)
+  override def transformSuccess[A,B](eventuallyX: Future[A])(f: A => B): Future[B] = ???
 
   /**
     * Transforms a failed asynchronous computation
     */
-  override def recoverFailure[A](eventuallyX: Future[A])(b: A): Future[A] = eventuallyX.recover(_ => b)
+  override def recoverFailure[A](eventuallyX: Future[A])(b: A): Future[A] = ???
 
   /**
     * Perform two asynchronous computation, one after the other. `makeAsyncComputation2`
@@ -28,10 +28,7 @@ object Async extends AsyncInterface {
   def sequenceComputations[A, B](
     makeAsyncComputation1: () => Future[A],
     makeAsyncComputation2: () => Future[B]
-  ): Future[(A, B)] = for {
-    a <- makeAsyncComputation1()
-    b <- makeAsyncComputation2()
-  } yield (a,b)
+  ): Future[(A, B)] = ???
 
   /**
     * Concurrently perform two asynchronous computations and pair their successful
@@ -42,7 +39,7 @@ object Async extends AsyncInterface {
   def concurrentComputations[A, B](
     makeAsyncComputation1: () => Future[A],
     makeAsyncComputation2: () => Future[B]
-  ): Future[(A, B)] = makeAsyncComputation1() zip makeAsyncComputation2()
+  ): Future[(A, B)] = ???
 
   /**
     * Attempt to perform an asynchronous computation.
@@ -50,10 +47,7 @@ object Async extends AsyncInterface {
     * the asynchronous computation so that at most `maxAttempts`
     * are eventually performed.
     */
-  def insist[A](makeAsyncComputation: () => Future[A], maxAttempts: Int): Future[A] = maxAttempts match {
-    case 1 => makeAsyncComputation()
-    case _ => makeAsyncComputation().recoverWith(_ => insist(makeAsyncComputation, maxAttempts - 1))
-  }
+  def insist[A](makeAsyncComputation: () => Future[A], maxAttempts: Int): Future[A] = ???
 
   /**
     * Turns a callback-based API into a Future-based API
@@ -62,14 +56,7 @@ object Async extends AsyncInterface {
     *
     * Hint: Use a `Promise`
     */
-  def futurize(callbackBasedApi: CallbackBasedApi): FutureBasedApi = () => {
-   val p = Promise[Int]
-    callbackBasedApi.computeIntAsync {
-      case Success(n) => p.success(n)
-      case Failure(exception) => p.failure(exception)
-    }
-    p.future
-  }
+  def futurize(callbackBasedApi: CallbackBasedApi): FutureBasedApi = () => ???
 }
 
 /**
